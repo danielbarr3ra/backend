@@ -1,4 +1,4 @@
-import { Product, ProductManager } from "../src/ProductManager";
+import { Product, ProductManager } from "./ProductManager";
 
 
 describe('testing  product manager', () => {

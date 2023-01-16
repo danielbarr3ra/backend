@@ -5,13 +5,14 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
+    "rootDir": "src",
+    "resolveJsonModule": true,
     "lib": [
       "ES2016"
     ],
-    "outDir": "./built"
+    "outDir": "built"
   },
   "include": [
-    "src/**/*",
-    "tests/ProdcutManager.test.ts"
+    "src/"
   ]
 }

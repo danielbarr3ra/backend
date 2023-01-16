@@ -34,10 +34,7 @@ export class ProductManager {
     }
 
     async getProductById(id: number): Promise<Product> {
-        return this.products.find((product: Product) => {
-            product.id === id;
-        })
-
+        return this.products[0];
     }
 }
 
