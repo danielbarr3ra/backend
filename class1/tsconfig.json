@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "lib": [
+      "ES2016"
+    ],
+    "outDir": "./built"
+  },
+  "include": [
+    "src/**/*",
+    "tests/ProdcutManager.test.ts"
+  ]
+}
