@@ -8,23 +8,23 @@ export class ProductManager {
         this.products = []
     }
     hashCodeToInt(code: string): number {
-        let numberHash: number = 0;
-        if (code.length === 0) return numberHash;
+        let numberHash = 0
+        if (code.length === 0) return numberHash
         for (let i = 0; i < code.length; i++) {
-            let chr = code.charCodeAt(i)
+            const chr = code.charCodeAt(i)
             numberHash = ((numberHash << 5) - numberHash) + chr
             numberHash = numberHash & numberHash
         }
-        return numberHash & 0xffff;
+        return numberHash & 0xffff
     }
     async addProduct(newProduct: Product) {
-        let product = this.products.find(
+        const product = this.products.find(
             (prod: Product) => {
                 return prod.code == newProduct.code
             }
         )
         if (product != null) {
-            throw Error("Duplicate product found")
+            throw Error('Duplicate product found')
         }
         else {
             newProduct.id = this.hashCodeToInt(newProduct.code)
@@ -33,17 +33,17 @@ export class ProductManager {
     }
 
     async getProducts(): Promise<Product[]> {
-        return this.products;
+        return this.products
     }
 
     async getProductById(id: number) {
-        let product = this.products.find(
+        const product = this.products.find(
             (prod: Product) => {
                 return prod.id == id
             }
         )
         if (product == undefined) {
-            throw Error("No product with this ID found")
+            throw Error('No product with this ID found')
         }
         else return product
     }
