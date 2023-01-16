@@ -2,7 +2,7 @@ import { Product, ProductManager } from "./ProductManager";
 
 
 describe('testing  product manager', () => {
-    let danielsProductManager: ProductManager
+    let danielsManager: ProductManager
     let testProduct: Product = {
         "title": "producto prueba",
         "description": "Este es un producto prueba",
@@ -11,27 +11,30 @@ describe('testing  product manager', () => {
         "code": "abc123",
         "stock": 25
     }
-    test('Create new product manager, expect it to be empty', async () => {
-        danielsProductManager = new ProductManager('Daniel');
-        let products = await danielsProductManager.getProducts();
-        console.log(products)
+    test('Products of new product manager are empty', async () => {
+        danielsManager = new ProductManager('Daniel');
+        let products = await danielsManager.getProducts();
         expect(products.length).toBe(0)
     })
-    test('Add a new product', async () => {
-        let addedSuccesfully = await danielsProductManager.addProduct(testProduct)
-        expect(addedSuccesfully).toBe(true)
-        let products = await danielsProductManager.getProducts();
-        expect(products.length).toBe(1);
-        expect(products[0].id).toBeGreaterThan(0)
+    test('Adding new prodcut is succesfull', async () => {
+        await danielsManager.addProduct(testProduct)
+        let products = await danielsManager.getProducts();
+        expect(products.length).toBe(1)
+        expect(products[0].id).not.toBeNull;
     })
-    test('add product with same values again', async () => {
+    test('throw error when same product is added', async () => {
+        await expect(danielsManager.addProduct(testProduct)).rejects.toEqual(Error("Duplicate product found"
+        ))
     })
-    test('trhow error if value not found', async () => {
-        let returnedProduct = await danielsProductManager.getProductById(1111);
-        expect(returnedProduct).toBe(undefined);
+    test('throw error if id value not found', async () => {
+        await expect(danielsManager.getProductById(1111)).rejects.toEqual(Error("No product with this ID found"
+        ));
     })
-    test('finds the right value', async () => {
-        let returnedProduct = await danielsProductManager.getProductById(53904);
+    test('resolves to returned expected product when id found', async () => {
+        let pr = await danielsManager.getProducts()
+        console.log(JSON.stringify(pr))
+        let returnedProduct = await danielsManager.
+            getProductById(53904);
         expect(returnedProduct).toBe(testProduct);
     })
 })

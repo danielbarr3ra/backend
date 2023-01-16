@@ -17,15 +17,18 @@ export class ProductManager {
         }
         return numberHash & 0xffff;
     }
-    async addProduct(newProduct: Product): Promise<never> {
-        if (this.products.some((product: Product) => {
-            product.code === newProduct.code
-        })) {
+    async addProduct(newProduct: Product) {
+        let product = this.products.find(
+            (prod: Product) => {
+                return prod.code == newProduct.code
+            }
+        )
+        if (product != null) {
+            throw Error("Duplicate product found")
+        }
+        else {
             newProduct.id = this.hashCodeToInt(newProduct.code)
-            this.products.push(newProduct);
-            return
-        } else {
-            throw TypeError('No Product Found')
+            this.products.push(newProduct)
         }
     }
 
@@ -33,8 +36,16 @@ export class ProductManager {
         return this.products;
     }
 
-    async getProductById(id: number): Promise<Product> {
-        return this.products[0];
+    async getProductById(id: number) {
+        let product = this.products.find(
+            (prod: Product) => {
+                return prod.id == id
+            }
+        )
+        if (product == undefined) {
+            throw Error("No product with this ID found")
+        }
+        else return product
     }
 }
 
