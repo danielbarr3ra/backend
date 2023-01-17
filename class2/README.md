@@ -1,5 +1,8 @@
 ##Instructions
 
+Same as class1 but using fs library and adding two more methods
+
+
 ## Just clone repo:
 1. npm i
 2. npm test
