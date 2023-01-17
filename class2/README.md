@@ -1,6 +1,6 @@
 ##Instructions
 
-Same as class1 but using fs library and adding two more methods
+Same as class1 but using fs library and adding two more methods. These are also updated in the unit tests. Added other eslint rules as well.
 
 
 ## Just clone repo:
