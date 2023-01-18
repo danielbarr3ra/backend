@@ -7,7 +7,17 @@ export class ProductManager {
         path: string
     ) {
         this.path = path
-        fs.writeFile(this.path, '[]')
+        if (!this.checkFileExists(path))
+            fs.writeFile(this.path, '[]')
+    }
+
+    async checkFileExists(file: string) {
+        try {
+            await fs.access(file, fs.constants.F_OK);
+            return true;
+        } catch {
+            return false;
+        }
     }
 
     async addProduct(newProduct: Product) {

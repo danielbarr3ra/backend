@@ -38,6 +38,10 @@ let mockedProducts: Product[] = [{
 
 let setUpManager = new ProductManager('database/inventory.txt')
 
-mockedProducts.forEach((prod: Product) => {
-    setUpManager.addProduct(prod)
-});
+const setDBup = async () => {
+    for (const prod of mockedProducts) {
+        await setUpManager.addProduct(prod)
+    }
+}
+
+setDBup()
