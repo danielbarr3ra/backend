@@ -73,6 +73,10 @@ export class ProductManager {
         await fs.writeFile(this.path, JSON.stringify(currentProducts))
 
     }
+
+    async deleteAllProducts() {
+        await fs.writeFile(this.path, JSON.stringify([]))
+    }
 }
 
 export type Product = {

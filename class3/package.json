@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "npm run build && jest",
+    "setup-mock-db": "npm run build && node ./built/scripts/mockDatabase.js",
+    "restart-mock-db": "npm run build && node ./built/scripts/deleteMockDatabase.js",
     "start": "npm run build && node ./built/app.js "
   },
   "keywords": [],
