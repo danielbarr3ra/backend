@@ -16,17 +16,27 @@ app.get('/', (req, res) => {
 })
 
 app.get('/products/:pid', async (req, res) => {
-    let pid: number = parseInt(req.params.pid)
-    let product = await globalManager.getProductById(pid);
-    res.send(`get product through id: ${pid} the product is ${JSON.stringify(product)}`)
+    try {
+        let pid: number = parseInt(req.params.pid)
+        let product = await globalManager.getProductById(pid);
+        res.send(`get product through id: ${pid} the product is ${JSON.stringify(product)}`)
+    } catch (error) {
+        res.status(505)
+        res.send('no product fond with this id')
+    }
 })
 app.get('/products', async (req, res) => {
-    let { limit } = safeQuery(req)
-    let products = await globalManager.getProducts();
-    if (limit != undefined) {
-        products = products.slice(0, parseInt(limit))
+    try {
+        let { limit } = safeQuery(req)
+        let products = await globalManager.getProducts();
+        if (limit != undefined) {
+            products = products.slice(0, parseInt(limit))
+        }
+        res.send(`get all products with limit of ${limit}. Products: ${JSON.stringify(products)}`)
+    } catch (error) {
+        res.status(505)
+        res.send('cannot obtain products')
     }
-    res.send(`get all products with limit of ${limit}. Products: ${JSON.stringify(products)}`)
 })
 
 app.listen(port, () => {
