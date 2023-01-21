@@ -1,5 +1,6 @@
 import { promises as fs } from 'fs';
-import { hashCodeToInt } from '../utils/ProductUtils'
+import { hashCodeToInt } from '../../utils/InventoryUtils'
+import { Product } from '../../types/InventoryTypes';
 
 export class ProductManager {
     path: string
@@ -35,6 +36,7 @@ export class ProductManager {
             currentProducts.push(newProduct)
             await fs.writeFile(this.path, JSON.stringify(currentProducts))
         }
+        return
     }
 
     async getProducts(): Promise<Product[]> {
@@ -71,6 +73,7 @@ export class ProductManager {
 
         currentProducts[index] = updatedProduct;
         await fs.writeFile(this.path, JSON.stringify(currentProducts))
+        return
     }
 
     async deleteProduct(id: number) {
@@ -86,15 +89,6 @@ export class ProductManager {
 
     async deleteAllProducts() {
         await fs.writeFile(this.path, JSON.stringify([]))
+        return
     }
-}
-
-export type Product = {
-    title: string,
-    description: string,
-    price: number,
-    thumbnail: string,
-    code: string,
-    stock: number
-    id?: number | null
 }
