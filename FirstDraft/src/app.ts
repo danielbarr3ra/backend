@@ -3,14 +3,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { safeQuery } from './utils/SafeQueryMethod';
 import { CartManager } from './api/managers/CartManager';
-import { Product } from './types/InventoryTypes';
+import { Cart, Product, SubCartProduct } from './types/InventoryTypes';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
 const ProdMan = new ProductManager('database/products.txt');
-const CartMan = new CartManager('database/cart.txt')
+const CartMan = new CartManager('database/carts.txt')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -80,6 +80,71 @@ app.delete('/api/products/:pid', async (req, res) => {
     } catch (error) {
         res.status(404)
         res.send('cannot delete the product')
+    }
+})
+
+app.get('/api/carts/', async (req, res) => {
+    try {
+        let { limit } = safeQuery(req)
+        let carts = await CartMan.getCarts();
+        if (limit != undefined) {
+            carts = carts.slice(0, parseInt(limit))
+        }
+        res.send(`get all carts with limit of ${limit}. Products: ${JSON.stringify(carts)}`)
+    } catch (error) {
+        res.status(404)
+        res.send('cannot obtain carts')
+    }
+})
+app.post('/api/carts/', async (req, res) => {
+    try {
+        let newCart: Cart = req.body;
+        await CartMan.addCart(newCart)
+        res.status(200).send('cart added')
+    } catch (error) {
+        console.log(error)
+        res.status(404)
+        res.send('cannot add cart')
+    }
+})
+
+app.get('/api/carts/:cid', async (req, res) => {
+    try {
+        let cid: number = parseInt(req.params.cid)
+        let newCart = await CartMan.getCartById(cid);
+        res.send(`get product through id: ${cid} the product is ${JSON.stringify(newCart)}`)
+    } catch (error) {
+        res.status(404)
+        res.send('no product fond with this id')
+    }
+})
+
+app.post('/api/carts/:cid/product/:pid', async (req, res) => {
+    try {
+        let cid: number = parseInt(req.params.cid);
+        let pid: number = parseInt(req.params.pid);
+        let cart: Cart = await CartMan.getCartById(cid);
+        let products = cart.products;
+        for (let p of products) {
+            if (pid === p.id) {
+                p.quantity += 1;
+                await CartMan.updateCart(cid, 'products', products)
+                res.status(200).send('udpated the cart')
+                return
+            }
+        }
+        // I think this should be a put statment tho
+        products.push({
+            id: pid,
+            quantity: 1
+        })
+
+        await CartMan.updateCart(cid, 'products', products)
+
+        res.status(200).send('udpated the cart')
+    } catch (error) {
+        res.status(404)
+        res.send('Cannot find product')
     }
 })
 

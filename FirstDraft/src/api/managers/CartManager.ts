@@ -24,8 +24,9 @@ export class CartManager {
     async addCart(newCart: Cart) {
         const currentCarts = await this.getCarts()
         const Cart = currentCarts.find(
-            (prod: Cart) => {
-                return prod.id == newCart.id
+            // convert this to the products array instead ?
+            (c: Cart) => {
+                return c.id == newCart.id
             }
         )
         if (Cart != null) {
@@ -48,8 +49,8 @@ export class CartManager {
     async getCartById(id: number) {
         const currentCarts = await this.getCarts();
         const Cart = currentCarts.find(
-            (prod: Cart) => {
-                return prod.id == id
+            (c: Cart) => {
+                return c.id == id
             }
         )
         if (Cart == undefined) {

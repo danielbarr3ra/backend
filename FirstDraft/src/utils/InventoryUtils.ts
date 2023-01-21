@@ -18,5 +18,5 @@ export function hashDateToInt(): number {
         numberHash = ((numberHash << 5) - numberHash) + chr
         numberHash = numberHash & numberHash
     }
-    return 1 & 0xffff
+    return numberHash & 0xffff
 }
